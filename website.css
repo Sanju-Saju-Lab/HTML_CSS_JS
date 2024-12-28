@@ -1,0 +1,269 @@
+/* Resetting default margin, padding, and box-sizing for all elements */
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box; /* Ensures padding and border are included in element width and height */
+}
+
+/* Styling the body of the webpage */
+body {
+    font-family: Arial, sans-serif; /* Setting a clean, readable font */
+    line-height: 1.5; /* Ensures text has good spacing */
+    background-color: #888; /* Light gray background */
+    background-size: cover; /* Makes background image cover the entire screen */
+    background-repeat: no-repeat; /* Prevents background image from repeating */
+    color: #FFF; /* Sets text color to white */
+}
+
+/* Container for aligning content centrally with maximum width */
+.container {
+    width: 90%; /* Makes the container take 90% of the screen width */
+    max-width: 1200px; /* Limits the maximum width to 1200px */
+    margin: auto; /* Centers the container horizontally */
+}
+
+/* Fixed header styling */
+header {
+    position: fixed; /* Keeps the header at the top while scrolling */
+    top: 0; /* Aligns header to the top of the viewport */
+    width: 100%; /* Makes the header span the entire width */
+    background: none; /* Transparent background */
+    color: #FFF; /* White text color */
+    padding: 0px;
+    z-index: 1000; /* Ensures header stays above other elements */
+}
+
+/* Header title styling */
+header h1 {
+    text-align: left; /* Aligns the title to the left */
+    color: #FFF; /* White text color */
+    margin: 0px;
+}
+
+/* Navigation menu styling */
+header nav ul {
+    list-style: none; /* Removes bullet points from list */
+    text-align: right; /* Aligns menu items to the right */
+}
+
+/* Individual menu item styling */
+header nav ul li {
+    display: inline; /* Displays menu items in a single line */
+    margin: 0px 16px; /* Adds spacing between menu items */
+}
+
+/* Links inside navigation menu */
+header nav ul li a {
+    color: #FFF; /* White text color */
+    text-decoration: none; /* Removes underline from links */
+    font-weight: bold; /* Makes text bold */
+}
+
+/* Hover effect for navigation links */
+header nav ul li a:hover {
+    padding: 5px 10px; /* Adds padding around text */
+    color: #000; /* Changes text color to black */
+    background: #FFF; /* Adds a white background */
+    border-radius: 20px; /* Rounds the edges of the background */
+}
+
+/* Main content area */
+main {
+    padding: 75px 0px 0px 0px; /* Adds top padding to avoid overlap with fixed header */
+}
+
+/* Styling sections in the main content */
+main section {
+    margin: 0px 0px 32px 0px; /* Adds bottom margin for spacing */
+}
+
+/* Section titles */
+main h2 {
+    text-align: center; /* Centers the text */
+    color: #FFF; /* White text color */
+}
+
+/* General link styling */
+a {
+    cursor: pointer; /* Changes cursor to pointer on hover */
+    text-decoration: none; /* Removes underline */
+}
+
+/* Footer styling */
+footer {
+    background: #000; /* Black background */
+    color: #FFF; /* White text color */
+    text-align: center; /* Centers the text */
+    padding: 16px 0px; /* Adds vertical padding */
+    margin: 32px 0px 0px 0px; /* Adds top margin */
+}
+
+/* Footer content layout */
+.footer-content {
+    display: flex; /* Flexbox for layout */
+    justify-content: space-between; /* Spaces out items evenly */
+    align-items: flex-start; /* Aligns items to the top */
+    text-align: left; /* Aligns text to the left */
+}
+
+/* Contact information section in footer */
+footer .contact-info {
+    flex: 1; /* Takes up equal space */
+    color: #FFF; /* White text color */
+}
+
+/* Social media links styling */
+.social-media-links {
+    flex: 0.5; /* Takes up half the space compared to contact-info */
+}
+
+/* Individual social media link buttons */
+.social-media-links a {
+    cursor: pointer; /* Changes cursor to pointer */
+    padding: 5px; /* Adds padding */
+    font-size: 20px; /* Sets font size */
+    text-decoration: none; /* Removes underline */
+    transition: color 0.5s ease; /* Smooth color change on hover */
+}
+
+/* Hover effect for social media links */
+social-media-links a:hover {
+    display: inline-flex; /* Aligns items in a row */
+    align-items: center; /* Centers items vertically */
+    justify-content: center; /* Centers items horizontally */
+    width: 30px; /* Sets width */
+    height: 30px; /* Sets height */
+    background: #FFF; /* Adds white background */
+    border-radius: 50%; /* Makes the button circular */
+}
+
+/* Containers for login and signup forms */
+.login-container, .signup-container {
+    display: flex; /* Flexbox for centering */
+    justify-content: center; /* Centers items horizontally */
+    align-items: center; /* Centers items vertically */
+    min-height: 50vh; /* Sets minimum height to half the viewport */
+}
+
+/* Form styling */
+.login-form, .signup-form {
+    width: 300px; /* Sets fixed width */
+    padding: 15px; /* Adds padding */
+    background: none; /* Transparent background */
+    box-shadow: 0px 0px 30px rgba(277, 228, 237, 0.37); /* Subtle shadow for depth */
+    backdrop-filter: blur(30px); /* Adds blur effect */
+    border: 1px solid #FFF; /* White border */
+    border-radius: 8px; /* Rounds corners */
+}
+
+/* Form titles */
+.login-form h2, .signup-form h2 {
+    text-align: center; /* Centers the text */
+    color: #FFF; /* White text color */
+}
+
+/* Input group layout */
+.input-group{
+    position: relative; /* Needed for label positioning */
+    margin: 20px 0px 10px; /* Adds spacing between inputs */
+}
+
+/* Input fields styling */
+.input-group input {
+    width: 100%; /* Makes input fields take full width */
+    padding: 10px; /* Adds inner spacing */
+    background: #F0F0F0; /* Light gray background */
+    border: 1px solid #CCC; /* Gray border */
+    border-radius: 5px; /* Rounds corners */
+    display: block; /* Ensures block-level behavior */
+    outline: none; /* Removes blue outline */
+}
+
+/* Labels for inputs */
+.input-group label {
+    position: absolute; /* Positions label relative to input */
+    top: 50%; /* Centers label vertically */
+    left: 5px; /* Adds left spacing */
+    transform: translateY(-50%); /* Centers label accurately */
+    font-size: 16px; /* Sets font size */
+    color: #222; /* Dark gray color */
+    padding: 0px 5px; /* Adds padding around text */
+    pointer-events: none; /* Prevents label from being clicked */
+    transition: 0.5s; /* Smooth transition for animation */
+}
+
+/* When input is focused or has value, move label */
+.input-group input:focus ~ label,
+.input-group input:valid ~ label {
+    top: 0px; /* Moves label to the top */
+    font-size: 14px; /* Reduces font size */
+    background: none; /* No background */
+    padding: 0px 5px; /* Adds padding */
+}
+
+/* Styling icons */
+.icon-outline {
+    color: transparent; /* Makes icon text invisible */
+    -webkit-text-stroke: 1px #222; /* Adds outline to icon */
+}
+
+/* Eye icons for password visibility toggle */
+#eyeIcon, #eyeIconConfirm {
+    position: absolute; /* Positions icon relative to input */
+    top: 25%; /* Aligns vertically */
+    right: 5px; /* Aligns to the right */
+    color: #222; /* Dark gray color */
+}
+
+/* Buttons inside forms */
+.login-form button, .signup-form button {
+    width: 100%; /* Makes buttons span full width */
+    margin: 2px 0px; /* Adds spacing */
+    padding: 10px; /* Adds inner spacing */
+    border: none; /* Removes borders */
+    border-radius: 5px; /* Rounds corners */
+    background: #006400; /* Dark green background */
+    transition: 0.5s; /* Smooth background transition */
+    color: #fff; /* White text color */
+    font-size: 18px; /* Sets font size */
+    cursor: pointer; /* Changes cursor to pointer */
+    outline: none; /* Removes outline */
+}
+
+/* Hover effect for buttons */
+.login-form button:hover, .signup-form button:hover {
+    background: #0F0; /* Changes background to bright green */
+}
+
+/* Links inside forms */
+.login-form a, .signup-form a {
+    margin: 0px; /* Removes margin */
+    text-decoration: none; /* Removes underline */
+    float: right; /* Aligns link to the right */
+}
+
+/* Hover effect for links inside forms */
+.login-form a:hover, .signup-form a:hover {
+    text-decoration: none; /* Ensures no underline on hover */
+}
+
+/* Social login button styling */
+.social-login {
+    width: 100%; /* Makes social login section span full width */
+}
+
+/* Social login buttons */
+.social-login .btn-social {
+    margin: 2px 0px; /* Adds spacing between buttons */
+    padding: 10px; /* Adds inner spacing */
+    border: none; /* Removes borders */
+    border-radius: 5px; /* Rounds corners */
+    cursor: pointer; /* Changes cursor to pointer */
+    font-size: 18px; /* Sets font size */
+    background: #00F; /* Blue background */
+}
+
+/* Hover effect for social login buttons */
+.social-login .btn-social:hover{
+    background: #3299CC; /* Light blue background on hover */
+}
