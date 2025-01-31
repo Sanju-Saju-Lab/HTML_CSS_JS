@@ -1,59 +1,89 @@
-/**
- * Toggles the visibility of the password field and changes the icon accordingly.
- * @param {string} fieldId - The ID of the password input field.
- * @param {string} iconId - The ID of the eye icon.
- */
+// This function toggles the visibility of the password field
 function togglePasswordVisibility(fieldId, iconId) {
-    // Get the password field and eye icon elements using their IDs
+    // Get the password field and the eye icon using their IDs
     var passwordField = document.getElementById(fieldId);
     var eyeIcon = document.getElementById(iconId);
 
-    // Check if the password is currently hidden and toggle its visibility
+    // If the password field type is 'password', change it to 'text' to show the password
     if (passwordField.type === "password") {
-        // Change the field type to 'text' so the password is visible
-        passwordField.type = "text";
-        // Change the eye icon to indicate the password is visible
-        eyeIcon.classList.remove("fa-eye");
-        eyeIcon.classList.add("fa-eye-slash");
+        passwordField.type = "text"; // Show password
+        eyeIcon.classList.remove("fa-eye"); // Remove 'eye' icon
+        eyeIcon.classList.add("fa-eye-slash"); // Add 'eye-slash' icon to indicate password is visible
     } else {
-        // Change the field type back to 'password' to hide the password
-        passwordField.type = "password";
-        // Change the eye icon to indicate the password is hidden
-        eyeIcon.classList.remove("fa-eye-slash");
-        eyeIcon.classList.add("fa-eye");
+        passwordField.type = "password"; // Hide password again
+        eyeIcon.classList.remove("fa-eye-slash"); // Remove 'eye-slash' icon
+        eyeIcon.classList.add("fa-eye"); // Add 'eye' icon to indicate password is hidden
     }
 }
 
-/**
- * Validates the email and passwords in the form.
- * @param {Event} event - The form submission event.
- * @returns {boolean} - Returns true if validation passes, otherwise false.
- */
+// This function validates the email and password fields before the form is submitted
 function validatePasswords(event) {
-    // Get the email, password, and confirm password values entered by the user
+    // Get the email and password values from the form
     var email = document.getElementById("email").value;
-    var emailPattern = /^[^\s@]+@gmail\.com$/; // Regex to check if email is a Gmail address
     var password = document.getElementById("passwordField").value;
     var confirmPassword = document.getElementById("confirmPasswordField").value;
 
-    // Check if the email is in the correct format (Gmail only)
+    // Check if the email follows the Gmail format
+    var emailPattern = /^[^\s@]+@gmail\.com$/; // Regular expression to validate email
     if (!emailPattern.test(email)) {
-        alert("Invalid Email Id."); // Show an error message if the email is invalid
-        event.preventDefault(); // Stop the form from submitting
-        return false;
-    }  
+        alert("Invalid Email Id."); // Show alert if email is invalid
+        event.preventDefault(); // Prevent the form from submitting
+        return false; // Stop further validation
+    }
 
-    // Check if the password has at least 8 characters
-    if (password.length < 8) {
-        alert("Password must contain at least 8 characters."); // Show an error message if the password is too short
-        event.preventDefault(); // Stop the form from submitting
+    // Validate password length (between 8 and 12 characters)
+    if (password.length < 8 || password.length > 12) {
+        alert("Password must be 8-12 characters long."); // Show alert for invalid length
+        event.preventDefault(); // Prevent form submission
+        return false;
+    }
+
+    // Check if the password contains at least one lowercase letter
+    if (!/[a-z]/.test(password)) {
+        alert("Password must contain at least one lowercase letter (a-z).");
+        event.preventDefault();
+        return false;
+    }
+
+    // Check if the password contains at least one uppercase letter
+    if (!/[A-Z]/.test(password)) {
+        alert("Password must contain at least one uppercase letter (A-Z).");
+        event.preventDefault();
+        return false;
+    }
+
+    // Check if the password contains at least one digit
+    if (!/[0-9]/.test(password)) {
+        alert("Password must contain at least one number (0-9).");
+        event.preventDefault();
+        return false;
+    }
+
+    // Check if the password contains at least one special character
+    if (!/[!@#$%^&*()]/.test(password)) {
+        alert("Password must contain at least one special character (!@#$%^&*()).");
+        event.preventDefault();
+        return false;
+    }
+
+    // Ensure the password doesn't contain any spaces
+    if (/\s/.test(password)) {
+        alert("Password must not contain white spaces.");
+        event.preventDefault();
+        return false;
+    }
+
+    // Ensure the password doesn't have consecutive identical characters (e.g., "aa", "11")
+    if (/([a-zA-Z0-9!@#$%^&*()])\1/.test(password)) {
+        alert("Password must not have consecutive identical characters.");
+        event.preventDefault();
         return false;
     }
 
     // Check if the password and confirm password match
     if (password !== confirmPassword) {
-        alert("Passwords do not match."); // Show an error message if the passwords don't match
-        event.preventDefault(); // Stop the form from submitting
+        alert("Passwords do not match."); // Show alert if passwords don't match
+        event.preventDefault();
         return false;
     }
 
@@ -62,34 +92,8 @@ function validatePasswords(event) {
     return true; // Allow form submission
 }
 
-// Wait until the content is fully loaded before running this script
+// This event listener waits for the page to fully load and then adds the validation to the form
 document.addEventListener('DOMContentLoaded', () => {
-    // Select all video containers on the page
-    const videoContainers = document.querySelectorAll('.myVideo');
-
-    // Loop through each video container
-    videoContainers.forEach(container => {
-        // Select all video elements inside the container
-        const videos = container.querySelectorAll('video');
-        
-        // Loop through each video element
-        videos.forEach(video => {
-            // Add an event listener for when the mouse is over the video
-            video.addEventListener('mouseover', () => {
-                video.muted = true; // Mute the video
-                video.play(); // Play the video
-            });
-
-            // Add an event listener for when the mouse leaves the video
-            video.addEventListener('mouseout', () => {
-                video.pause(); // Pause the video
-                video.currentTime = 0; // Reset the video to the start
-            });
-
-            // Add an event listener for when the video is double-clicked
-            video.addEventListener('dblclick', () => {
-                video.muted = !video.muted; // Toggle the mute state (mute/unmute)
-            });
-        });
-    });
+    // Attach the validatePasswords function to the form submit event
+    document.getElementById('myForm').addEventListener('submit', validatePasswords);
 });
