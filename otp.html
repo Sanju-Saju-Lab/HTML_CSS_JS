@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /> <!-- Sets the character encoding of the page to UTF-8 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/> <!-- Makes the page responsive on mobile devices -->
+  <title>OTP Verification</title> <!-- Page title shown in browser tab -->
+
+  <!-- CSS Styles -->
+  <style>
+    /* Define custom color variables */
+    :root{
+      --bg:#0f172a;       /* Background color */
+      --card:#111827;     /* Card color */
+      --muted:#94a3b8;    /* Muted text color */
+      --text:#e5e7eb;     /* Main text color */
+      --accent:#22d3ee;   /* Accent color */
+      --ring:#38bdf8;     /* Focus ring color */
+    }
+
+    *{box-sizing:border-box} /* Include padding and border in element width/height calculations */
+
+    body{
+      margin:0; /* Remove default body margin */
+      min-height:100vh; /* Ensure body takes full viewport height */
+      display:grid; 
+      place-items:center; /* Center the card vertically and horizontally */
+      background: radial-gradient(80% 60% at 50% 30%, #0b1025 0%, var(--bg) 55%, #060914 100%); /* Gradient background */
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; /* Font styles */
+      color:var(--text); /* Default text color */
+    }
+
+    .card{
+      width:min(420px, 92vw); /* Card width is 420px max or 92% of viewport */
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); /* Card gradient */
+      border:1px solid rgba(255,255,255,0.08); /* Subtle border */
+      border-radius:20px; /* Rounded corners */
+      padding:28px 24px 24px; /* Inner spacing */
+      box-shadow: 0 20px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06); /* Shadow effect */
+      backdrop-filter: blur(6px); /* Blurs background behind card */
+      text-align:center; /* Center align text */
+    }
+
+    h1{font-size:1.4rem; margin:8px 0 6px;} /* Title style */
+    p{margin:0; color:var(--muted); font-size:.95rem} /* Paragraph style */
+
+    form{margin-top:20px} /* Space above form */
+
+    /* Container for OTP input boxes */
+    .otp-wrap{
+      margin:20px 0;
+      display:grid;
+      grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+      gap:12px; /* Gap between inputs */
+    }
+
+    /* OTP input style */
+    .otp {
+      appearance:textfield; /* Standard input appearance */
+      width:100%; 
+      aspect-ratio:1/1.1; /* Make input nearly square */
+      text-align:center; /* Center text */
+      font-size:1.4rem; font-weight:700; /* Bigger and bold */
+      color:var(--text); 
+      background:#0b1225; 
+      border:1px solid rgba(148,163,184,0.25); /* Light border */
+      border-radius:12px;
+      outline:none; /* Remove default focus outline */
+      transition:border-color .15s, box-shadow .15s; /* Smooth focus animation */
+      caret-color:var(--accent); /* Cursor color */
+    }
+
+    .otp:focus{
+      border-color:var(--ring); /* Change border on focus */
+      box-shadow:0 0 0 4px rgba(56,189,248,.15); /* Glow effect on focus */
+    }
+
+    /* Button style */
+    .btn{
+      appearance:none; border:0; cursor:pointer;
+      padding:12px 18px; border-radius:12px; font-weight:700;
+      color:#0b1225; background:linear-gradient(180deg, #67e8f9, #22d3ee);
+      box-shadow:0 10px 30px rgba(34,211,238,.25);
+      transition: transform .06s ease; /* Small animation on click */
+    }
+    .btn:active{ transform: translateY(1px); } /* Button moves slightly when clicked */
+
+    .timer{
+      font-size:1rem; color:#facc15; font-weight:600; /* Countdown timer style */
+    }
+
+    .footer{
+      margin-top:16px; color:#64748b; font-size:.9rem;
+    }
+
+    .footer button{
+      background:none; border:none; color:#22d3ee; /* Make resend button look like text */
+      font-weight:600; cursor:pointer;
+    }
+
+    .status{
+      margin-top:10px; font-size:.9rem; color:#22d3ee; /* Message display */
+    }
+  </style>
+</head>
+<body>
+  <!-- Main Card Container -->
+  <main class="card">
+    <h1>Enter the 4-digit OTP</h1>
+    <p>Check your email for the OTP. OTP is valid for <span id="timer" class="timer">10:00</span></p>
+
+    <!-- OTP Form -->
+    <form action="#" method="post" novalidate>
+      <div class="otp-wrap">
+        <input class="otp" type="text" maxlength="1" inputmode="numeric" required>
+        <input class="otp" type="text" maxlength="1" inputmode="numeric" required>
+        <input class="otp" type="text" maxlength="1" inputmode="numeric" required>
+        <input class="otp" type="text" maxlength="1" inputmode="numeric" required>
+      </div>
+      <button class="btn" type="submit">Verify OTP</button>
+    </form>
+
+    <!-- Status message -->
+    <div id="status" class="status"></div>
+
+    <!-- Footer with Resend button -->
+    <div class="footer">
+      Didn’t get the code? 
+      <button type="button" id="resendBtn">Resent OTP</button>. 
+      Don’t share OTP.
+    </div>
+  </main>
+
+  <!-- JavaScript -->
+  <script>
+    let time = 600; // Total countdown time in seconds (10 minutes)
+    let countdown;   // Variable to store interval
+    const timerEl = document.getElementById("timer"); // Timer element
+    const statusEl = document.getElementById("status"); // Status message element
+    const resendBtn = document.getElementById("resendBtn"); // Resend button element
+    const inputs = document.querySelectorAll(".otp"); // OTP input fields
+
+    // Function to start countdown
+    function startCountdown(){
+      clearInterval(countdown); // Clear any previous timer
+      time = 600; // Reset timer to 10 minutes
+      countdown = setInterval(()=>{
+        let minutes = Math.floor(time/60); // Calculate minutes
+        let seconds = time%60; // Calculate seconds
+        timerEl.textContent = 
+          `${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`; // Update timer display
+        time--; // Decrease time by 1 second
+        if(time<0){ // If time runs out
+          clearInterval(countdown); // Stop countdown
+          timerEl.textContent = "Expired"; // Show expired text
+          timerEl.style.color = "#ef4444"; // Change color to red
+        }
+      },1000); // Run every second
+    }
+
+    // Function to resend OTP
+    function resendOtp(){
+      startCountdown(); // Reset countdown
+      inputs.forEach(i => i.value = ''); // Clear all OTP inputs
+      inputs[0].focus(); // Focus on first input
+      statusEl.textContent = 'OTP Resent'; // Show message
+      setTimeout(()=> statusEl.textContent = '', 3000); // Clear message after 3 seconds
+    }
+
+    resendBtn.addEventListener("click", resendOtp); // Call resendOtp on button click
+
+    startCountdown(); // Start countdown when page loads
+  </script>
+</body>
+</html>
