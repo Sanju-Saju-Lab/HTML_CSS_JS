@@ -1,91 +1,117 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html> <!-- Defines this file as an HTML5 document -->
+<html lang="en"> <!-- HTML starts, language set to English -->
 <head>
-  <meta charset="UTF-8" /> <!-- Sets the character encoding of the page to UTF-8 -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/> <!-- Makes the page responsive on mobile devices -->
-  <title>OTP Verification</title> <!-- Page title shown in browser tab -->
+  <meta charset="UTF-8"> <!-- Sets character encoding (so all symbols display correctly) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Makes it responsive on mobile devices -->
+  <title>OTP Verification</title> <!-- Title of the webpage shown in browser tab -->
 
-  <!-- CSS Styles -->
   <style>
-    /* Define custom color variables */
+    /* ----- CSS VARIABLES (Reusable Colors) ----- */
     :root{
       --bg:#0f172a;       /* Background color */
-      --card:#111827;     /* Card color */
-      --muted:#94a3b8;    /* Muted text color */
-      --text:#e5e7eb;     /* Main text color */
-      --accent:#22d3ee;   /* Accent color */
+      --card:#111827;     /* Card background */
+      --muted:#94a3b8;    /* Muted text */
+      --text:#e5e7eb;     /* Normal text */
+      --accent:#22d3ee;   /* Highlight color */
       --ring:#38bdf8;     /* Focus ring color */
+      --success:#10b981;  /* Success color */
+      --error:#ef4444;    /* Error color */
     }
 
-    *{box-sizing:border-box} /* Include padding and border in element width/height calculations */
+    *{box-sizing:border-box} /* Makes padding & border included in element width/height */
 
     body{
-      margin:0; /* Remove default body margin */
-      min-height:100vh; /* Ensure body takes full viewport height */
-      display:grid; 
-      place-items:center; /* Center the card vertically and horizontally */
-      background: radial-gradient(80% 60% at 50% 30%, #0b1025 0%, var(--bg) 55%, #060914 100%); /* Gradient background */
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; /* Font styles */
-      color:var(--text); /* Default text color */
+      margin:0; /* Remove default margin */
+      min-height:100vh; /* Full viewport height */
+      display:grid; /* Use grid layout */
+      place-items:center; /* Center content */
+      background: radial-gradient(80% 60% at 50% 30%, #0b1025 0%, var(--bg) 55%, #060914 100%); /* Background gradient */
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; /* Font stack */
+      color:var(--text); /* Text color */
     }
 
     .card{
-      width:min(420px, 92vw); /* Card width is 420px max or 92% of viewport */
-      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); /* Card gradient */
-      border:1px solid rgba(255,255,255,0.08); /* Subtle border */
+      width:min(420px, 92vw); /* Responsive width */
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); /* Subtle gradient */
+      border:1px solid rgba(255,255,255,0.08); /* Light border */
       border-radius:20px; /* Rounded corners */
       padding:28px 24px 24px; /* Inner spacing */
-      box-shadow: 0 20px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06); /* Shadow effect */
-      backdrop-filter: blur(6px); /* Blurs background behind card */
-      text-align:center; /* Center align text */
+      box-shadow: 0 20px 60px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06); /* Outer + inner shadow */
+      backdrop-filter: blur(6px); /* Glass effect */
+      text-align:center; /* Center text inside */
     }
 
-    h1{font-size:1.4rem; margin:8px 0 6px;} /* Title style */
-    p{margin:0; color:var(--muted); font-size:.95rem} /* Paragraph style */
+    h1{font-size:1.4rem; margin:8px 0 6px;} /* Main heading */
+    p{margin:0; color:var(--muted); font-size:.95rem} /* Paragraph text */
 
-    form{margin-top:20px} /* Space above form */
+    form{margin-top:20px} /* Spacing above form */
 
-    /* Container for OTP input boxes */
     .otp-wrap{
-      margin:20px 0;
-      display:grid;
+      margin:20px 0; /* Spacing around OTP inputs */
+      display:grid; /* Grid layout */
       grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
-      gap:12px; /* Gap between inputs */
+      gap:12px; /* Space between inputs */
     }
 
-    /* OTP input style */
     .otp {
-      appearance:textfield; /* Standard input appearance */
-      width:100%; 
-      aspect-ratio:1/1.1; /* Make input nearly square */
+      appearance:textfield; /* Remove browser styles */
+      width:100%; /* Full width of column */
+      aspect-ratio:1/1.1; /* Square-like box */
       text-align:center; /* Center text */
-      font-size:1.4rem; font-weight:700; /* Bigger and bold */
-      color:var(--text); 
-      background:#0b1225; 
+      font-size:1.4rem; font-weight:700; /* Bigger text */
+      color:var(--text); /* Text color */
+      background:#0b1225; /* Input background */
       border:1px solid rgba(148,163,184,0.25); /* Light border */
-      border-radius:12px;
-      outline:none; /* Remove default focus outline */
-      transition:border-color .15s, box-shadow .15s; /* Smooth focus animation */
-      caret-color:var(--accent); /* Cursor color */
+      border-radius:12px; /* Rounded corners */
+      outline:none; /* Remove outline */
+      transition:border-color .15s, box-shadow .15s; /* Smooth hover/focus effect */
+      caret-color:var(--accent); /* Caret (blinking line) color */
     }
 
     .otp:focus{
       border-color:var(--ring); /* Change border on focus */
-      box-shadow:0 0 0 4px rgba(56,189,248,.15); /* Glow effect on focus */
+      box-shadow:0 0 0 4px rgba(56,189,248,.15); /* Highlight on focus */
     }
 
-    /* Button style */
-    .btn{
-      appearance:none; border:0; cursor:pointer;
-      padding:12px 18px; border-radius:12px; font-weight:700;
-      color:#0b1225; background:linear-gradient(180deg, #67e8f9, #22d3ee);
-      box-shadow:0 10px 30px rgba(34,211,238,.25);
-      transition: transform .06s ease; /* Small animation on click */
+    .otp.filled{ /* When user enters a number */
+      border-color:var(--success);
+      background:rgba(16,185,129,0.1);
     }
-    .btn:active{ transform: translateY(1px); } /* Button moves slightly when clicked */
+
+    .otp.error{ /* When OTP is wrong */
+      border-color:var(--error);
+      background:rgba(239,68,68,0.1);
+      animation: shake 0.3s ease-in-out; /* Shake animation */
+    }
+
+    /* Shake animation for wrong input */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      75% { transform: translateX(4px); }
+    }
+
+    .btn{
+      appearance:none; border:0; cursor:pointer; /* Remove styles */
+      padding:12px 18px; border-radius:12px; font-weight:700; /* Button styling */
+      color:#0b1225; background:linear-gradient(180deg, #67e8f9, #22d3ee); /* Gradient background */
+      box-shadow:0 10px 30px rgba(34,211,238,.25); /* Glow effect */
+      transition: transform .06s ease, opacity .15s;
+      width: 100%; /* Full width */
+      margin-top: 8px;
+    }
+    
+    .btn:active{ transform: translateY(1px); } /* Slight press effect */
+    
+    .btn:disabled{
+      opacity: 0.5; /* Faded when disabled */
+      cursor: not-allowed; /* Show not allowed cursor */
+      transform: none;
+    }
 
     .timer{
-      font-size:1rem; color:#facc15; font-weight:600; /* Countdown timer style */
+      font-size:1rem; color:#facc15; font-weight:600;
+      margin: 12px 0; /* Space around timer */
     }
 
     .footer{
@@ -93,82 +119,229 @@
     }
 
     .footer button{
-      background:none; border:none; color:#22d3ee; /* Make resend button look like text */
+      background:none; border:none; color:#22d3ee;
       font-weight:600; cursor:pointer;
+      text-decoration: underline;
+      transition: color .15s;
     }
 
-    .status{
-      margin-top:10px; font-size:.9rem; color:#22d3ee; /* Message display */
+    .footer button:hover{
+      color:#67e8f9;
+    }
+
+    .footer button:disabled{
+      color:#64748b;
+      cursor:not-allowed;
+      text-decoration:none;
+    }
+
+    .status{ /* Status message (success/error) */
+      margin-top:10px; font-size:.9rem;
+      padding: 8px 12px;
+      border-radius: 8px;
+      display: none; /* Hidden by default */
+    }
+
+    .status.success{
+      color:#10b981;
+      background:rgba(16,185,129,0.1);
+      border: 1px solid rgba(16,185,129,0.2);
+    }
+
+    .status.error{
+      color:#ef4444;
+      background:rgba(239,68,68,0.1);
+      border: 1px solid rgba(239,68,68,0.2);
+    }
+
+    .status.show{
+      display: block; /* Show status */
     }
   </style>
 </head>
 <body>
-  <!-- Main Card Container -->
-  <main class="card">
-    <h1>Enter the 4-digit OTP</h1>
-    <p>Check your email for the OTP. OTP is valid for <span id="timer" class="timer">10:00</span></p>
-
-    <!-- OTP Form -->
-    <form action="#" method="post" novalidate>
-      <div class="otp-wrap">
-        <input class="otp" type="text" maxlength="1" inputmode="numeric" required>
-        <input class="otp" type="text" maxlength="1" inputmode="numeric" required>
-        <input class="otp" type="text" maxlength="1" inputmode="numeric" required>
-        <input class="otp" type="text" maxlength="1" inputmode="numeric" required>
+  <main>
+    <div class="card"> <!-- Main card box -->
+      <h1>Enter Verification Code</h1>
+      <p>Check your email for the OTP. Please don't share.</p>
+      
+      <!-- OTP FORM -->
+      <form id="otpForm">
+        <div class="otp-wrap">
+          <!-- 4 input boxes for OTP -->
+          <input type="text" class="otp" maxlength="1" data-index="0">
+          <input type="text" class="otp" maxlength="1" data-index="1">
+          <input type="text" class="otp" maxlength="1" data-index="2">
+          <input type="text" class="otp" maxlength="1" data-index="3">
+        </div>
+        
+        <!-- Verify button -->
+        <button type="submit" class="btn" id="verifyBtn">Verify Code</button>
+      </form>
+      
+      <!-- Timer for resend -->
+      <div class="timer" id="timer">Resend code in 0:30</div>
+      
+      <!-- Resend option -->
+      <div class="footer">
+        Didn't receive the code? 
+        <button type="button" id="resendBtn" disabled>Resend Code</button>
       </div>
-      <button class="btn" type="submit">Verify OTP</button>
-    </form>
-
-    <!-- Status message -->
-    <div id="status" class="status"></div>
-
-    <!-- Footer with Resend button -->
-    <div class="footer">
-      Didn’t get the code? 
-      <button type="button" id="resendBtn">Resent OTP</button>. 
-      Don’t share OTP.
+      
+      <!-- Status message (success/error) -->
+      <div class="status" id="status"></div>
     </div>
   </main>
 
-  <!-- JavaScript -->
   <script>
-    let time = 600; // Total countdown time in seconds (10 minutes)
-    let countdown;   // Variable to store interval
-    const timerEl = document.getElementById("timer"); // Timer element
-    const statusEl = document.getElementById("status"); // Status message element
-    const resendBtn = document.getElementById("resendBtn"); // Resend button element
-    const inputs = document.querySelectorAll(".otp"); // OTP input fields
+    /* ---------- JavaScript Starts ---------- */
 
-    // Function to start countdown
-    function startCountdown(){
-      clearInterval(countdown); // Clear any previous timer
-      time = 600; // Reset timer to 10 minutes
-      countdown = setInterval(()=>{
-        let minutes = Math.floor(time/60); // Calculate minutes
-        let seconds = time%60; // Calculate seconds
-        timerEl.textContent = 
-          `${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`; // Update timer display
-        time--; // Decrease time by 1 second
-        if(time<0){ // If time runs out
-          clearInterval(countdown); // Stop countdown
-          timerEl.textContent = "Expired"; // Show expired text
-          timerEl.style.color = "#ef4444"; // Change color to red
+    // Selecting elements from HTML
+    const otpInputs = document.querySelectorAll('.otp');
+    const verifyBtn = document.getElementById('verifyBtn');
+    const resendBtn = document.getElementById('resendBtn');
+    const timerEl = document.getElementById('timer');
+    const statusEl = document.getElementById('status');
+    const form = document.getElementById('otpForm');
+    
+    let timeLeft = 30; // Countdown seconds
+    let timerInterval; // To hold setInterval
+    
+    const correctOTP = '3690'; // Hardcoded OTP for testing
+    
+    // Start countdown timer
+    function startTimer() {
+      timeLeft = 30;
+      resendBtn.disabled = true; // Disable resend button
+      
+      timerInterval = setInterval(() => {
+        timeLeft--; // Decrease every second
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        timerEl.textContent = `Resend code in ${minutes}:${seconds.toString().padStart(2, '0')}`;
+        
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          timerEl.textContent = 'Code expired';
+          resendBtn.disabled = false; // Enable resend
         }
-      },1000); // Run every second
+      }, 1000);
     }
-
-    // Function to resend OTP
-    function resendOtp(){
-      startCountdown(); // Reset countdown
-      inputs.forEach(i => i.value = ''); // Clear all OTP inputs
-      inputs[0].focus(); // Focus on first input
-      statusEl.textContent = 'OTP Resent'; // Show message
-      setTimeout(()=> statusEl.textContent = '', 3000); // Clear message after 3 seconds
+    
+    // Show status message
+    function showStatus(message, type) {
+      statusEl.textContent = message;
+      statusEl.className = `status ${type} show`; // Apply class
+      setTimeout(() => {
+        statusEl.classList.remove('show'); // Hide after 3 sec
+      }, 3000);
     }
-
-    resendBtn.addEventListener("click", resendOtp); // Call resendOtp on button click
-
-    startCountdown(); // Start countdown when page loads
+    
+    // Handle typing in OTP inputs
+    otpInputs.forEach((input, index) => {
+      input.addEventListener('input', (e) => {
+        const value = e.target.value;
+        
+        if (!/^\d*$/.test(value)) { // Allow only digits
+          e.target.value = '';
+          return;
+        }
+        
+        input.classList.remove('error');
+        
+        if (value) { // If input not empty
+          input.classList.add('filled');
+          if (index < otpInputs.length - 1) { // Move to next box
+            otpInputs[index + 1].focus();
+          }
+        } else {
+          input.classList.remove('filled');
+        }
+        
+        // Enable verify button only if all inputs filled
+        const allFilled = Array.from(otpInputs).every(inp => inp.value);
+        verifyBtn.disabled = !allFilled;
+      });
+      
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !input.value && index > 0) {
+          // Move back to previous input
+          otpInputs[index - 1].focus();
+          otpInputs[index - 1].value = '';
+          otpInputs[index - 1].classList.remove('filled');
+        }
+        
+        // Handle paste (Ctrl+V)
+        if (e.key === 'v' && (e.ctrlKey || e.metaKey)) {
+          e.preventDefault();
+          navigator.clipboard.readText().then(text => {
+            const digits = text.replace(/\D/g, '').slice(0, 4); // Only 4 digits
+            digits.split('').forEach((digit, i) => {
+              if (otpInputs[i]) {
+                otpInputs[i].value = digit;
+                otpInputs[i].classList.add('filled');
+              }
+            });
+            if (digits.length === 4) {
+              verifyBtn.disabled = false;
+            }
+          });
+        }
+      });
+    });
+    
+    // Handle form submit
+    form.addEventListener('submit', (e) => {
+      e.preventDefault(); // Prevent refresh
+      
+      const enteredOTP = Array.from(otpInputs).map(input => input.value).join('');
+      
+      if (enteredOTP === correctOTP) {
+        // Success
+        showStatus('✓ Verification successful!', 'success');
+        clearInterval(timerInterval);
+        timerEl.textContent = 'Verified';
+        verifyBtn.textContent = 'Verified ✓';
+        verifyBtn.disabled = true;
+        
+        otpInputs.forEach(input => {
+          input.classList.remove('error');
+          input.classList.add('filled');
+        });
+      } else {
+        // Error
+        showStatus('✗ Invalid code. Please try again.', 'error');
+        
+        otpInputs.forEach(input => {
+          input.classList.add('error');
+          input.classList.remove('filled');
+          input.value = '';
+        });
+        
+        otpInputs[0].focus(); // Focus back to first input
+        verifyBtn.disabled = true;
+      }
+    });
+    
+    // Handle resend
+    resendBtn.addEventListener('click', () => {
+      showStatus('New code sent!', 'success');
+      startTimer();
+      
+      otpInputs.forEach(input => {
+        input.value = '';
+        input.classList.remove('filled', 'error');
+      });
+      
+      otpInputs[0].focus();
+      verifyBtn.disabled = true;
+      verifyBtn.textContent = 'Verify Code';
+    });
+    
+    // Start initial timer
+    startTimer();
+    otpInputs[0].focus();
+    verifyBtn.disabled = true;
   </script>
 </body>
 </html>
