@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parallax Website</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      height: 600vh;
+      background: #87ceeb;
+      overflow-x: hidden;
+      font-family: Arial, sans-serif;
+    }
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: transparent;
+      color: #000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      z-index: 1000;
+    }
+    .navbar h1 {
+      font-size: 22px;
+      letter-spacing: 1px;
+      color: #000;
+    }
+    .nav-center {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+      justify-content: center;
+      flex: 1;
+    }
+    .nav-center li a {
+      text-decoration: none;
+      color: #000;
+      font-size: 16px;
+      padding: 8px 16px;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+    }
+    .nav-center li a:hover {
+      background-color: #000;
+      color: #fff;
+      transform: scale(1.05);
+    }
+    .nav-right {
+      display: flex;
+      gap: 15px;
+      list-style: none;
+    }
+    .nav-right li a {
+      text-decoration: none;
+      font-size: 16px;
+      padding: 8px 16px;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      color: #000;
+    }
+    .nav-right li a:hover {
+      background-color: #000;
+      color: #fff;
+    }
+    .nav-right li a.signup {
+      background-color: #000;
+      color: #fff;
+    }
+    .parallax {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      z-index: -1;
+    }
+    .parallax img {
+      position: absolute;
+      width: 100%;
+      height: 100vh;
+      object-fit: cover;
+      opacity: 0;
+      transform: translateY(100px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+    .parallax img.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    #hill1, #hill2, #hill3, #hill4 {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    #leaf {
+      opacity: 0;
+      transform: translate(100px, -100px); 
+      transition: opacity 1s ease, transform 1s ease;
+    }
+    #leaf.show {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <h1>Logo</h1>
+    <ul class="nav-center">
+      <li><a href="parallax.html">Home</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
+    </ul>
+    <ul class="nav-right">
+      <li><a href="login.html">Log in</a></li>
+      <li><a href="signup.html" class="signup">Sign up</a></li>
+    </ul>
+  </div>
+
+  <div class="parallax">
+    <img src="/Parallax Images/Hill1.png" id="hill1">
+    <img src="/Parallax Images/Hill2.png" id="hill2">
+    <img src="/Parallax Images/Hill3.png" id="hill3">
+    <img src="/Parallax Images/Hill4.png" id="hill4">
+    <img src="/Parallax Images/Hill5.png" id="hill5">
+    <img src="/Parallax Images/Tree.png" id="tree">
+    <img src="/Parallax Images/Leaf.png" id="leaf">
+    <img src="/Parallax Images/Plant.png" id="plant">
+  </div>
+
+  <script>
+    const revealOrder = [
+      document.getElementById("hill5"),
+      document.getElementById("tree"),
+      document.getElementById("leaf"),
+      document.getElementById("plant")
+    ];
+    window.addEventListener("scroll", () => {
+      let scrollValue = window.scrollY;
+      let step = window.innerHeight;
+      revealOrder.forEach((img, index) => {
+        if (scrollValue > (index + 1) * step * 0.8) {
+          img.classList.add("show");
+        } else {
+          img.classList.remove("show");
+        }
+      });
+    });
+  </script>
+  <script src='https://www.noupe.com/embed/019961f389327195a986b2a6f689d557b62b.js'></script>
+</body>
+</html>
